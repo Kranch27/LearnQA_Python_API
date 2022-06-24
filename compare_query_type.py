@@ -1,5 +1,4 @@
 import requests
-
 # 1
 response = requests.post("https://playground.learnqa.ru/ajax/api/compare_query_type")
 print(response.status_code)
