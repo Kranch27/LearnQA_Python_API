@@ -1,13 +1,13 @@
-import requests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
+from lib.my_requests import MyRequests
 
 
 class TestUserEditNegative(BaseCase):
     def setup(self):
         # REGISTER
         register_date = self.prepare_registration_date()
-        response1 = requests.post("https://playground.learnqa.ru/api/user/", data=register_date)
+        response1 = MyRequests.post("/user/", data=register_date)
 
         Assertions.assert_code_status(response1, 200)
         Assertions.assert_json_has_key(response1, "id")
@@ -23,14 +23,14 @@ class TestUserEditNegative(BaseCase):
             'password': password
         }
 
-        response2 = requests.post("https://playground.learnqa.ru/api/user/login/", data=login_date)
+        response2 = MyRequests.post("/user/login/", data=login_date)
         self.auth_sid = self.get_cookie(response2, "auth_sid")
         self.token = self.get_header(response2, "x-csrf-token")
 
     # Попытаемся изменить данные пользователя, будучи неавторизованными
     def test_edit_no_auth(self):
         new_name = "Change name"
-        response1 = requests.put(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response1 = MyRequests.put(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": "no_token"},
                                  cookies={"auth_sid": "no_cookie"},
                                  data={"firstName": new_name}
@@ -38,7 +38,7 @@ class TestUserEditNegative(BaseCase):
         Assertions.assert_code_status(response1, 400)
 
         # Проверяем что имя не изменилось
-        response2 = requests.get(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response2 = MyRequests.get(f"/user/{self.user_id}",
                                   headers={"x-csrf-token": self.token},
                                   cookies={"auth_sid": self.auth_sid}
                                   )
@@ -57,12 +57,12 @@ class TestUserEditNegative(BaseCase):
             'password': '1234'
         }
 
-        response1 = requests.post("https://playground.learnqa.ru/api/user/login/", data=login_date)
+        response1 = MyRequests.post("/user/login/", data=login_date)
         auth_sid = self.get_cookie(response1, "auth_sid")
         token = self.get_header(response1, "x-csrf-token")
 
         new_name = "Change name"
-        response2 = requests.put(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response2 = MyRequests.put(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": token},
                                  cookies={"auth_sid": auth_sid},
                                  data={"firstName": new_name}
@@ -70,7 +70,7 @@ class TestUserEditNegative(BaseCase):
         Assertions.assert_code_status(response2, 400)
 
         # Проверяем что имя не изменилось
-        response3 = requests.get(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response3 = MyRequests.get(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid}
                                  )
@@ -86,7 +86,7 @@ class TestUserEditNegative(BaseCase):
     # на новый email без символа @
     def test_edit_other_user_email(self):
         new_email = "mail0example.com"
-        response1 = requests.put(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response1 = MyRequests.put(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid},
                                  data={"email": new_email}
@@ -94,7 +94,7 @@ class TestUserEditNegative(BaseCase):
         Assertions.assert_code_status(response1, 400)
 
         # Проверяем что email не изменился
-        response2 = requests.get(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response2 = MyRequests.get(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid}
                                  )
@@ -111,7 +111,7 @@ class TestUserEditNegative(BaseCase):
     def test_edit_user_name_one(self):
 
         new_name = "1"
-        response1 = requests.put(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response1 = MyRequests.put(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid},
                                  data={"firstName": new_name}
@@ -119,7 +119,7 @@ class TestUserEditNegative(BaseCase):
         Assertions.assert_code_status(response1, 400)
 
         # Проверяем что имя не изменилось
-        response2 = requests.get(f"https://playground.learnqa.ru/api/user/{self.user_id}",
+        response2 = MyRequests.get(f"/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid}
                                  )
