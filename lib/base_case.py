@@ -1,4 +1,5 @@
 import json.decoder
+from datetime import datetime
 
 from requests import Response
 
@@ -22,3 +23,19 @@ class BaseCase:
 
         return response_as_dict[name]
 
+    def prepare_registration_date(self, email=None, username=None):
+        if email is None:
+            base_part = 'learnqa'
+            domain = "example.com"
+            random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+            email = f"{base_part}{random_part}@{domain}"
+
+        if username is None:
+            username = 'learnqa'
+        return{
+            'password': '123',
+            'username': username,
+            'firstName': 'learnqa',
+            'lastName': 'learnqa',
+            'email': email
+        }
