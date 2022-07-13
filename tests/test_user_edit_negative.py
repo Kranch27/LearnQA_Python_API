@@ -93,7 +93,7 @@ class TestUserEditNegative(BaseCase):
                                  )
         Assertions.assert_code_status(response1, 400)
 
-        # Проверяем что имя не изменилось
+        # Проверяем что email не изменился
         response2 = requests.get(f"https://playground.learnqa.ru/api/user/{self.user_id}",
                                  headers={"x-csrf-token": self.token},
                                  cookies={"auth_sid": self.auth_sid}
