@@ -1,10 +1,15 @@
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 from lib.my_requests import MyRequests
+import allure
 
-
+@allure.suite("Удаление пользователя")
+@allure.link("https://example.com/testcase")
 class TestUserDelete(BaseCase):
     # удалить пользователя по ID 2
+    @allure.description("Тест на удаление пользователя id: 2")
+    @allure.title("Удаление пользователя id: 2")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_id2(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -22,6 +27,9 @@ class TestUserDelete(BaseCase):
 
     # Создать пользователя, авторизоваться из-под него, удалить
     # затем попробовать получить его данные по ID
+    @allure.description("Тест на создание\удаление\получение данных пользователя")
+    @allure.title("Удаление пользователя созданного пользователя")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_new_user(self):
         # Создание пользователя
         data = self.prepare_registration_date()
@@ -48,6 +56,9 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response4, 404)
 
     # удалить пользователя, будучи авторизованными другим пользователем.
+    @allure.description("Тест на удаление пользователя будучи авторизованным под другим")
+    @allure.title("Удаление пользователя другого пользователя")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_other_user_auth(self):
         # Создание пользователя
         data = self.prepare_registration_date()

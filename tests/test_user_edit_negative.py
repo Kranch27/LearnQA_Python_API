@@ -1,8 +1,10 @@
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 from lib.my_requests import MyRequests
+import allure
 
-
+@allure.suite("Редактирование пользователя")
+@allure.link("https://example.com/testcase")
 class TestUserEditNegative(BaseCase):
     def setup(self):
         # REGISTER
@@ -28,6 +30,9 @@ class TestUserEditNegative(BaseCase):
         self.token = self.get_header(response2, "x-csrf-token")
 
     # Попытаемся изменить данные пользователя, будучи неавторизованными
+    @allure.description("Тест на редактирование пользователя без авторизации")
+    @allure.title("Редактирование пользователя без авторизации")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_no_auth(self):
         new_name = "Change name"
         response1 = MyRequests.put(f"/user/{self.user_id}",
@@ -51,6 +56,9 @@ class TestUserEditNegative(BaseCase):
         )
 
     # Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем
+    @allure.description("Тест на редактирование пользователя с авторизацией под другим пользователем")
+    @allure.title("Редактирование пользователя под другим пользователем")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_other_user_auth(self):
         login_date = {
             'email': 'vinkotov@example.com',
@@ -84,6 +92,9 @@ class TestUserEditNegative(BaseCase):
 
     # Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем,
     # на новый email без символа @
+    @allure.description("Тест на редактирование пользователя, новый email без @")
+    @allure.title("Редактирование пользователя некорректный email")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_other_user_email(self):
         new_email = "mail0example.com"
         response1 = MyRequests.put(f"/user/{self.user_id}",
@@ -108,6 +119,9 @@ class TestUserEditNegative(BaseCase):
 
     # Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем,
     # на очень короткое значение в один символ
+    @allure.description("Тест на редактирование пользователя короткое имя, 1 символ")
+    @allure.title("Редактирование пользователя имя 1 символ")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_user_name_one(self):
 
         new_name = "1"

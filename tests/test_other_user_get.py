@@ -1,9 +1,14 @@
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 from lib.my_requests import MyRequests
+import allure
 
-
+@allure.suite("Получение информации о пользователе")
+@allure.link("https://example.com/testcase")
 class TestUserGet(BaseCase):
+    @allure.description("Тест на получение информации о другом пользователе")
+    @allure.title("Получение данных другого пользователя")
+    @allure.severity(allure.severity_level.NORMAL)
     def test_get__other_user(self):
 
         #Создание другого пользователя
