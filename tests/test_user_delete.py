@@ -28,7 +28,7 @@ class TestUserDelete(BaseCase):
     # Создать пользователя, авторизоваться из-под него, удалить
     # затем попробовать получить его данные по ID
     @allure.description("Тест на создание\удаление\получение данных пользователя")
-    @allure.title("Удаление пользователя созданного пользователя")
+    @allure.title("Удаление созданного пользователя")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_new_user(self):
         # Создание пользователя
@@ -57,7 +57,7 @@ class TestUserDelete(BaseCase):
 
     # удалить пользователя, будучи авторизованными другим пользователем.
     @allure.description("Тест на удаление пользователя будучи авторизованным под другим")
-    @allure.title("Удаление пользователя другого пользователя")
+    @allure.title("Удаление другого пользователя")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_other_user_auth(self):
         # Создание пользователя
