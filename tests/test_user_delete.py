@@ -22,8 +22,11 @@ class TestUserDelete(BaseCase):
         response3 = MyRequests.delete("/user/2",
                                    headers={"x-csrf-token": token},
                                    cookies={"auth_sid": auth_sid})
-
         Assertions.assert_code_status(response3, 400)
+
+        response5 = MyRequests.get("/user/2")
+        Assertions.assert_code_status(response5, 200)
+        Assertions.assert_json_has_key(response5, "username")
 
     # Создать пользователя, авторизоваться из-под него, удалить
     # затем попробовать получить его данные по ID
@@ -82,3 +85,7 @@ class TestUserDelete(BaseCase):
                                       headers={"x-csrf-token": token},
                                       cookies={"auth_sid": auth_sid})
         Assertions.assert_code_status(response3, 400)
+
+        response5 = MyRequests.get(f"/user/{user_id}")
+        Assertions.assert_code_status(response5, 200)
+        Assertions.assert_json_has_key(response5, "username")
